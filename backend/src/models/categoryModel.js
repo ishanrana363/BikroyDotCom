@@ -8,6 +8,10 @@ const categorySchema = new Schema({
         type : String,
         required : true,
         unique : true
+    },
+    img : {
+        type : String,
+         required : true
     }
 },{timestamps:true,versionKey:false});
 
