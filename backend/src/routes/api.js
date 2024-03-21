@@ -3,22 +3,18 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 const authMiddleware = require("../middlewares/authMiddleware");
-const productController = require("../controllers/productController");
+
+
+router.post("/registration",userController.registrationController);
+router.post("/login",userController.loginController);
+router.get("/profile/details",authMiddleware.isValidUser,userController.profileDetailsController);
+router.put("/profile/update",authMiddleware.isValidUser,userController.profileUpdateController);
+router.delete("/profile/delete/:id",authMiddleware.isAdmin,userController.profileDeleteController);
+router.get("/all/profile/data",authMiddleware.isAdmin,userController.allProfileDataController);
 
 // users
 
-router.post("/send-otp/:email",userController.sendEmail);
-router.post("/otp-verify/:email/:otp" , userController.emailVerify);
-router.post("/profile/save" , authMiddleware, userController.profileSaves);
-router.get("/profile/details" , authMiddleware, userController.profileRead);
-router.delete("/profile/delete/:id" , authMiddleware, userController.profileDelete);
 
-
-// product
-
-
-router.post("/category/create",productController.categoryCreateController);
-router.post("/subCategory/create",productController.subCategoryCreateController);
 
 
 

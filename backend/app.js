@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const path = require("path");
 const connectDB = require("./db");
 const routes = require("./src/routes/api");
+const adminRoutes = require("./src/routes/adminRoutes")
 
 
 
@@ -61,7 +62,8 @@ connectDB().catch(err => console.log(err));
 // api file import
 
 
-app.use("/api/v1",routes)
+app.use("/api/v1",routes);
+app.use("/api/v1",adminRoutes);
 
 
 

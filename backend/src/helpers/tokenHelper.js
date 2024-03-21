@@ -1,16 +1,14 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
-const jwtKey = process.env.JWTPASS;
 
-exports.encodeToken = (email,user_id) =>{
-    const payload = {
-        exp : Math.floor(Date.now()/1000)+(60*60*60+24),
-        email : email,
-        user_id : user_id
-    };
-    return jwt.sign(payload,jwtKey);
+const parseUserToken = (req)=>{
+    try {
+        let authToken = req.headers.authorization;
+        let userToken = authToken.split(' ')[1];
+        const verifyToken = jwt.verify(userToken, process.env.JWTPASS);
+        return verifyToken;
+    }catch (e) {
+        throw new Error();
+    }
 };
 
-exports.decodeToken = (token)=>{
-    return jwt.verify(token,jwtKey);
-};
+module.exports = {parseUserToken};

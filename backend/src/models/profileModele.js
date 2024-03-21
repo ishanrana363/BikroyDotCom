@@ -4,8 +4,28 @@ const {Schema,model} = mongoose;
 
 
 const profileSchema = new Schema({
-    userId : {
-        type : mongoose.Schema.Types.ObjectId, required : true
+    name : {
+        type : String,
+        required : true
+    },
+    email: {
+        type: String,
+        validate: {
+            validator: function(v) {
+                return /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/.test(v);
+            },
+            message: props => `${props.value} is not a valid email!`
+        },
+        required: [true, 'User email required'],
+        unique : true
+    },
+    password : {
+        type : String,
+        required : true
+    },
+    role : {
+        type : String,
+        required : true
     },
     cus_add : {
         type : String,required:true
