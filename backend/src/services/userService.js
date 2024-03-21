@@ -6,7 +6,7 @@ const registrationService = async (req) => {
     try{
         let reqBody = req.body;
         let {email} = req.body;
-        reqBody.role = "admin";
+        reqBody.role = "user";
         let userEmail = await profileModel.findOne({email: email});
         if (userEmail){
             return {

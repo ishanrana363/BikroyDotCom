@@ -14,10 +14,12 @@ exports.loginController = async (req,res) =>{
     res.status(200).send(result);
 };
 
+
 exports.profileDetailsController = async (req,res) =>{
     let result = await profileReadService(req);
     res.status(200).send(result);
 };
+
 
 exports.profileUpdateController = async (req,res) =>{
     let result = await profileUpdateService(req);
@@ -29,6 +31,8 @@ exports.profileDeleteController = async (req,res) =>{
     let result = await profileDetailsService(req);
     res.status(200).send(result);
 };
+
+
 exports.allProfileDataController = async (req,res) =>{
     let result = await allProfileDataServices(req);
     res.status(200).send(result);

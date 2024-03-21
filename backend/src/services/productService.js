@@ -1,41 +1,84 @@
 const categoryModel = require("../models/categoryModel");
-const {parseToken} = require("../helpers/tokenHelper");
-const jwt = require("jsonwebtoken");
+const productModel = require("../models/productModel");
+const deleteService = require("../commonService/deleteService");
+
+const {parseUserToken} = require("../helpers/tokenHelper");
+const mongoose = require("mongoose");
+const checkAssociate = require("../commonService/cheackAssociate");
+
+
 
 const categoryCreateService = async (req) => {
-    let authToken = req.headers.token;
-    let userToken = authToken.split(' ')[1];
-    let verifyToken = jwt.verify(userToken,process.env.JWTPASS);
-    try{
-        const categoryData = {
-            categoryName : req.body?.categoryName,
-            img : req.body?.img,
-            userEmail : verifyToken.email
-        };
+    const parseToken = parseUserToken(req);
+    try {
+        if (parseToken.role==="admin"){
+            let reqBody = req.body;
+            reqBody.userEmail = parseToken.email;
+            let categoryData = await categoryModel.create(reqBody);
+            return { status:"success",data:categoryData};
+        }else {
+            return {status:"fail",msg:"Permission not allowed"};
+        }
+    }catch (e) {
+        return {status:"fail",msg:e.toString()};
+    }
+};
 
-            if (verifyToken.role==="admin"){
-                const data = await categoryModel.create(categoryData);
-                return{
-                    status:"success",
-                    data : data
+const categoryListService = async () => {
+    try {
+        let categoryData = await categoryModel.find();
+        return {status:"success",data:categoryData};
+    }catch (e){
+        return {status:"fail",msg:e.toString()};
+    }
+};
+
+const categoryUpdate = async (req) => {
+    let parseToken = parseUserToken(req);
+    try {
+        let id = req.params.id;
+        let filter = { _id : id };
+        let reqBody = req.body;
+        if (parseToken.role==="admin"){
+            let data = await categoryModel.updateOne(filter,reqBody);
+            return {status:"success",data : data};
+        }else {
+            return {status:"fail",msg:"Permission not granted"};
+        }
+    }catch (e) {
+        return {status:"fail",msg:e.toString()};
+    }
+};
+
+const categoryDeleteService = async (req) => {
+    let parseToken = parseUserToken(req);
+    try {
+        let deleteId = new mongoose.Types.ObjectId(req.params.id);
+        console.log(`delete id is ${deleteId}`);
+        let checkProductModel = await checkAssociate({categoryID:deleteId},productModel);
+
+        if (parseToken.role==="admin"){
+            if (checkProductModel){
+                return {
+                    status:"fail",msg:"Associate with product model"
                 };
             }else {
-                return{
-                    status:"fail",
-                    msg:"permission not granted"
-                };
+                let deleteData = await deleteService(req,categoryModel);
+                return {status:"success",data:deleteData};
             }
-
-    }catch (e) {
-        return {
-            status:"fail",
-            msg : e.toString()
+        }else {
+            return {status:"fail",msg:"Permission not granted"};
         }
+    }catch (e) {
+        console.log(e.toString());
+        return {status:"fail",msg:e.toString()};
     }
 };
 
 
-module.exports = {
-    categoryCreateService
-}
-
+module.exports ={
+    categoryCreateService,
+    categoryListService,
+    categoryUpdate,
+    categoryDeleteService
+};
