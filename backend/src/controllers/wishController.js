@@ -1,0 +1,1 @@
+const wishModel = require("../models/")

@@ -53,7 +53,7 @@ const productDetailsSchema = new Schema({
         type : String,
         required : true,
     },
-    productID : {
+        productID : {
         type : mongoose.Schema.Types.ObjectId,
         required : true
     }

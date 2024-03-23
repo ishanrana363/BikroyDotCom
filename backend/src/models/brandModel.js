@@ -12,6 +12,10 @@ const brandSchema = new Schema({
     img : {
         type : String,
         required : true
+    },
+    userEmail : {
+        type : String,
+        required : true
     }
 },{timestamps:true,versionKey:false});
 
