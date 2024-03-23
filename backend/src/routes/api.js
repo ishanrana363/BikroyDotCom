@@ -6,6 +6,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const categoryController = require("../controllers/categoryController");
 const brandController = require("../controllers/brandController");
 const productController = require("../controllers/productController");
+const productSliderController = require("../controllers/productSliderController");
 
 
 // users
@@ -53,8 +54,14 @@ router.get("/product-details/:productID",productController.productDetailsControl
 router.get("/product/:remark",productController.productListByRemark);
 
 
+// product slider
 
 
+router.post("/slider-create", authMiddleware.isAdmin, productSliderController.productSliderCreateController);
+router.put("/slider-update/:id", authMiddleware.isAdmin, productSliderController.productSliderUpdateController);
+router.delete("/slider-delete/:id",authMiddleware.isAdmin, productSliderController.productSliderDeleteController);
+router.get("/slider-list" , productSliderController.productSliderListController);
+router.get("/slider-list-admin" , authMiddleware.isAdmin, productSliderController.productSliderListByAdminController);
 
 
 module.exports = router;
