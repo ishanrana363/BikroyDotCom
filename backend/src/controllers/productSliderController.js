@@ -1,4 +1,5 @@
-const {productSliderCreateService,productSliderUpdateService,productSliderDeleteService,productSliderListService,productSliderListByAdmin}
+const {productSliderCreateService,productSliderUpdateService,productSliderDeleteService,
+    productSliderListService,productSliderListByAdmin}
     = require("../services/productSliderService");
 
 exports.productSliderCreateController = async (req,res)=>{

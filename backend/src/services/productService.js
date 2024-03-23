@@ -1,5 +1,5 @@
 const productModel = require("../models/productModel");
-const productDetails = require("../models/productDetailsModel");
+const reviewModel = require("../models/reviewModel");
 const mongoose = require("mongoose");
 const {parseUserToken} = require("../helpers/tokenHelper");
 
@@ -84,12 +84,58 @@ const productByRemarkListService = async (req) => {
     }catch (e) {
         return {status:"fail",msg:e.toString()};
     }
+};
+
+const productReviewCreateService = async (req) => {
+    let parseToken = parseUserToken(req);
+    try {
+        let userId = parseToken.userId;
+        console.log(userId);
+        let reqBody = req.body;
+        reqBody.userID = userId;
+        let data = await reviewModel.create(reqBody);
+        return {status:"success",data : data};
+    }catch (e) {
+        return {status:"fail",msg:e.toString()};
+    }
+};
+
+
+const productReviewDetailsService = async (req) => {
+    try {
+        let productId = new mongoose.Types.ObjectId(req.params.productID);
+        let matchState = { $match : { productID : productId } };
+        let joinWithUserId = {
+            $lookup : {
+                from : "profiles", localField:"userID",foreignField:"_id",as:"profile"
+            }
+        };
+
+        const unwindProfile = { $unwind : "$profile" }
+
+        const projection = { $project : {
+                "des" : 1,
+                "rating" : 1,
+                "profile.name" : 1
+        } }
+
+        let data = await reviewModel.aggregate([
+            matchState, joinWithUserId,unwindProfile,projection
+        ]);
+
+        return {status:"success",data : data};
+
+    }catch (e) {
+        return {status:"fail",msg:e.toString()};
+    }
 }
 
 
 module.exports = {
     productUpdateService,
     productDetailsService,
-    productByRemarkListService
+    productByRemarkListService,
+    productReviewCreateService,
+    productReviewDetailsService
 }
 

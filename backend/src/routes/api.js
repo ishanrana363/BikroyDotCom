@@ -9,7 +9,7 @@ const productController = require("../controllers/productController");
 const productSliderController = require("../controllers/productSliderController");
 
 
-// users
+// profile
 
 
 router.post("/profile-create",userController.registrationController);
@@ -45,13 +45,14 @@ router.get("/brand-list-admin",authMiddleware.isAdmin,brandController.brandListB
 //product
 
 
-
 router.post("/product-create",authMiddleware.isAdmin,productController.productProductDetailsCreateController);
 router.get("/product-list-by-brand/:brandID/:pageNo/:perPage/:searchValue", productController.productListByBrandId);
 router.get("/product-list-by-category/:categoryID/:pageNo/:perPage/:searchValue", productController.productListByCategoryId);
 router.put("/product-update/:id" , authMiddleware.isAdmin, productController.productUpdateController);
 router.get("/product-details/:productID",productController.productDetailsController);
 router.get("/product/:remark",productController.productListByRemark);
+router.post("/review-create",authMiddleware.isValidUser, productController.productReviewController);
+router.get("/product-review-details/:productID", productController.productReviewDetailsController);
 
 
 // product slider
