@@ -2,7 +2,7 @@ const parentModel = require("../models/productModel");
 const childModel = require("../models/productDetailsModel");
 const createParentChildCreation = require("../commonService/createParentChildService");
 const {parseUserToken} = require("../helpers/tokenHelper");
-const {productListByBrandIdService,productListByCategoryIdService}
+const {productListByBrandIdService,productListByCategoryIdService,productUpdateService,productDetailsService,productByRemarkListService}
     = require("../services/productService");
 const categoryJoinService = require("../commonService/categoryJoinService");
 const joinBrandService = require("../commonService/joinBrandService");
@@ -75,5 +75,21 @@ const joinBrandService = require("../commonService/joinBrandService");
  };
 
 
+ exports.productUpdateController = async (req,res)=>{
+     let result = await productUpdateService(req);
+     res.status(200).send(result);
+ };
 
+
+
+exports.productDetailsController = async (req,res)=>{
+    let result = await productDetailsService(req);
+    res.status(200).send(result);
+};
+
+
+exports.productListByRemark = async (req,res)=>{
+    let result = await productByRemarkListService(req);
+    res.status(200).send(result);
+};
 

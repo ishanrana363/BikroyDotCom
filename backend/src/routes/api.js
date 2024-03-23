@@ -48,6 +48,9 @@ router.get("/brand-list-admin",authMiddleware.isAdmin,brandController.brandListB
 router.post("/product-create",authMiddleware.isAdmin,productController.productProductDetailsCreateController);
 router.get("/product-list-by-brand/:brandID/:pageNo/:perPage/:searchValue", productController.productListByBrandId);
 router.get("/product-list-by-category/:categoryID/:pageNo/:perPage/:searchValue", productController.productListByCategoryId);
+router.put("/product-update/:id" , authMiddleware.isAdmin, productController.productUpdateController);
+router.get("/product-details/:productID",productController.productDetailsController);
+router.get("/product/:remark",productController.productListByRemark);
 
 
 
