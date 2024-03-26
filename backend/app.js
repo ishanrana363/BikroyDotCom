@@ -6,8 +6,6 @@ const hpp = require('hpp');
 const cors = require("cors")
 const mongoSanitize = require('express-mongo-sanitize');
 const cookieParser = require('cookie-parser')
-const mongoose = require('mongoose');
-const path = require("path");
 const connectDB = require("./db");
 const routes = require("./src/routes/api");
 const adminRoutes = require("./src/routes/adminRoutes")
@@ -53,6 +51,7 @@ app.use(cookieParser())
 
 app.use(express.urlencoded({ limit: '1000mb'}));
 app.use(express.json({limit: '1000mb'}));
+
 // Database Connect
 
 
