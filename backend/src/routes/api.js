@@ -9,6 +9,7 @@ const productController = require("../controllers/productController");
 const productSliderController = require("../controllers/productSliderController");
 const featureController = require("../controllers/featureController");
 const wishController = require("../controllers/wishController");
+const cartController = require("../controllers/addToCartController");
 
 
 // profile
@@ -82,5 +83,13 @@ router.delete("/feature-delete/:id", authMiddleware.isAdmin,featureController.fe
 router.post("/wish-add" , authMiddleware.isValidUser, wishController.wishCreateController);
 router.delete("/wish-delete/:id",authMiddleware.isValidUser, wishController.wishDeleteService);
 router.get("/wish-details/:id",authMiddleware.isValidUser, wishController.wishDetailsController);
+
+
+//cart
+
+
+router.post("/cart-add", authMiddleware.isValidUser, cartController.cartCreateController);
+router.delete("/cart-delete/:id", authMiddleware.isValidUser, cartController.cartRemoveController);
+router.get("/cart-details/:id", authMiddleware.isValidUser, cartController.cartDetailsController);
 
 module.exports = router;

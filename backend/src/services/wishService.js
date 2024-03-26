@@ -20,7 +20,6 @@ const wishDeleteService = async (req) => {
     let parseToken = parseUserToken(req);
     try {
         let wishId = new mongoose.Types.ObjectId(req.params.id);
-        console.log(wishId)
         let filter = { _id : wishId, userID : parseToken.userId };
         await wishModel.findByIdAndDelete(filter);
         return {status:"success", msg : "Wish delete successfully" };
