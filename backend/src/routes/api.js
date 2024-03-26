@@ -7,6 +7,8 @@ const categoryController = require("../controllers/categoryController");
 const brandController = require("../controllers/brandController");
 const productController = require("../controllers/productController");
 const productSliderController = require("../controllers/productSliderController");
+const featureController = require("../controllers/featureController");
+const wishController = require("../controllers/wishController");
 
 
 // profile
@@ -64,5 +66,21 @@ router.delete("/slider-delete/:id",authMiddleware.isAdmin, productSliderControll
 router.get("/slider-list" , productSliderController.productSliderListController);
 router.get("/slider-list-admin" , authMiddleware.isAdmin, productSliderController.productSliderListByAdminController);
 
+
+// feature
+
+
+router.post("/feature-create" , authMiddleware.isAdmin, featureController.featureCreateService);
+router.get("/feature-list",featureController.featureListController);
+router.put("/feature-update/:id",authMiddleware.isAdmin,featureController.featureUpdateController);
+router.delete("/feature-delete/:id", authMiddleware.isAdmin,featureController.featureDeleteController);
+
+
+// wish
+
+
+router.post("/wish-add" , authMiddleware.isValidUser, wishController.wishCreateController);
+router.delete("/wish-delete/:id",authMiddleware.isValidUser, wishController.wishDeleteService);
+router.get("/wish-details/:id",authMiddleware.isValidUser, wishController.wishDetailsController);
 
 module.exports = router;
